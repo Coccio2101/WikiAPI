@@ -17,7 +17,7 @@ async function databaseConnect() {
         await mongoose.connect(url)
         console.log("Connected to the database")
     } catch(err) {
-        console.log("Error occoured: " + err)
+        console.log(err)
     }  
 }
 databaseConnect()
@@ -43,6 +43,20 @@ app.get("/articles", async(req, res) => {
         res.send(articlesList)
     } catch(err) {
         res.send(err)
+    }
+})
+
+app.post("/articles", async(req, res) => {
+    const article = new Article({
+        title: req.body.title,
+        content: req.body.content
+    })
+
+    try {
+        await article.save()
+        res.send("Successfully added a new article")
+    } catch(err) {
+        console.log(err)
     }
 })
 
