@@ -36,6 +36,16 @@ const articleSchema = new mongoose.Schema({
 
 const Article = new mongoose.model("Article", articleSchema)
 
+app.get("/articles", async(req, res) => {
+    // fetch all the articles
+    try {
+        const articlesList = await Article.find({}).exec()
+        res.send(articlesList)
+    } catch(err) {
+        res.send(err)
+    }
+})
+
 app.listen(3000, () => {
     console.log("Server is listening at port 3000")
 })
