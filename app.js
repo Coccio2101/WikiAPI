@@ -36,6 +36,8 @@ const articleSchema = new mongoose.Schema({
 
 const Article = new mongoose.model("Article", articleSchema)
 
+// REQUEST TARGETING ALL ITEMS
+
 app.route("/articles")
 .get(async(req, res) => {
     // fetch all the articles
@@ -64,6 +66,19 @@ app.route("/articles")
     try {
         await Article.deleteMany({})
         res.send("Successfully deleted all the articles")
+    } catch(err) {
+        res.send(err)
+    }
+});
+
+// REQUESTS TARGETING A SPECIFIC ARTICLE
+// REMEMBER: the space is encoded like %20, for example for fetch an article
+// on Jhon Doe the route is /articles/Jhon%20Doe
+
+app.route("/articles/:articleTitle")
+.get(async(req, res) => {
+    try {
+        res.send(await Article.findOne({title: req.params.articleTitle}).exec())
     } catch(err) {
         res.send(err)
     }
