@@ -39,14 +39,14 @@ const Article = new mongoose.model("Article", articleSchema)
 app.get("/articles", async(req, res) => {
     // fetch all the articles
     try {
-        const articlesList = await Article.find({}).exec()
-        res.send(articlesList)
+        res.send(await Article.find({}).exec())
     } catch(err) {
         res.send(err)
     }
 })
 
 app.post("/articles", async(req, res) => {
+    // insert a new item inside the collection
     const article = new Article({
         title: req.body.title,
         content: req.body.content
@@ -57,6 +57,16 @@ app.post("/articles", async(req, res) => {
         res.send("Successfully added a new article")
     } catch(err) {
         console.log(err)
+    }
+})
+
+app.delete("/articles", async(req, res) => {
+    // delete all the aricles
+    try {
+        await Article.deleteMany({})
+        res.send("Successfully deleted all the articles")
+    } catch(err) {
+        res.send(err)
     }
 })
 
