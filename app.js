@@ -36,7 +36,7 @@ const articleSchema = new mongoose.Schema({
 
 const Article = new mongoose.model("Article", articleSchema)
 
-// REQUEST TARGETING ALL ITEMS
+///////////////////////////// REQUEST TARGETING ALL ITEMS /////////////////////////////
 
 app.route("/articles")
 .get(async(req, res) => {
@@ -71,7 +71,7 @@ app.route("/articles")
     }
 });
 
-// REQUESTS TARGETING A SPECIFIC ARTICLE
+///////////////////////////// REQUESTS TARGETING A SPECIFIC ARTICLE /////////////////////////////
 // REMEMBER: the space is encoded like %20, for example for fetch an article
 // on Jhon Doe the route is /articles/Jhon%20Doe
 
@@ -89,6 +89,17 @@ app.route("/articles/:articleTitle")
         await Article.findOneAndReplace(
             {title: req.params.articleTitle},
             {title: req.body.title, content: req.body.content})
+        res.send("Succesfully update the article")
+    } catch(err) {
+        res.send(err)
+    }
+})
+.patch(async(req, res) => {
+    // update only the fields that we provide for
+    try {
+        await Article.updateOne(
+            {title: req.params.articleTitle},
+            {$set: req.body})
         res.send("Succesfully update the article")
     } catch(err) {
         res.send(err)
