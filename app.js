@@ -36,7 +36,8 @@ const articleSchema = new mongoose.Schema({
 
 const Article = new mongoose.model("Article", articleSchema)
 
-app.get("/articles", async(req, res) => {
+app.route("/articles")
+.get(async(req, res) => {
     // fetch all the articles
     try {
         res.send(await Article.find({}).exec())
@@ -44,8 +45,7 @@ app.get("/articles", async(req, res) => {
         res.send(err)
     }
 })
-
-app.post("/articles", async(req, res) => {
+.post(async(req, res) => {
     // insert a new item inside the collection
     const article = new Article({
         title: req.body.title,
@@ -59,8 +59,7 @@ app.post("/articles", async(req, res) => {
         console.log(err)
     }
 })
-
-app.delete("/articles", async(req, res) => {
+.delete(async(req, res) => {
     // delete all the aricles
     try {
         await Article.deleteMany({})
