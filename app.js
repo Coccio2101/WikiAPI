@@ -83,6 +83,17 @@ app.route("/articles/:articleTitle")
         res.send(err)
     }
 })
+.put(async(req, res) => {
+    // replace the article with the new one
+    try {
+        await Article.findOneAndReplace(
+            {title: req.params.articleTitle},
+            {title: req.body.title, content: req.body.content})
+        res.send("Succesfully update the article")
+    } catch(err) {
+        res.send(err)
+    }
+})
 
 app.listen(3000, () => {
     console.log("Server is listening at port 3000")
